@@ -1,0 +1,34 @@
+openapi: 3.0.0
+info:
+  title: Registration API
+  version: 1.0.0
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, username, password, captchaToken]
+              properties:
+                firstName: { type: string, example: "Joshua" }
+                lastName: { type: string, example: "Doe" }
+                username: { type: string, minLength: 3, example: "josh_sec" }
+                password: { type: string, minLength: 8, example: "P@ssw0rd123" }
+                captchaToken: { type: string, description: "Token from reCAPTCHA" }
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  userId: { type: string }
+                  status: { type: string, example: "success" }
+        '400':
+          description: Validation Error (e.g., weak password, missing fields)
+        '409':
+          description: Conflict (Username already exists)
